@@ -36,7 +36,12 @@ if(WIN32)
     set(expat_SRCS ${expat_SRCS} lib/libexpat.def)
 endif(WIN32)
 
-add_library(expat SHARED ${expat_SRCS})
+if (BUILD_STATIC)
+     add_library(expat STATIC ${expat_SRCS})
+     add_definitions(-DXML_STATIC)  # needed to build examples w/ static lib
+else()
+     add_library(expat SHARED ${expat_SRCS})
+endif(BUILD_STATIC)
 
 install(TARGETS expat RUNTIME DESTINATION bin
                       LIBRARY DESTINATION lib
